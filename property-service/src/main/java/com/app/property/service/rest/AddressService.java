@@ -1,5 +1,6 @@
 package com.app.property.service.rest;
 
+import org.apache.solr.common.SolrDocumentList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.app.property.service.bo.AddressBO;
 import com.app.property.service.dto.AddressDTO;
+import com.app.property.service.dto.AddressSearchInputDTO;
 import com.app.property.service.dto.WSOutputDTO;
 
 @Controller
@@ -52,6 +54,19 @@ public class AddressService {
 		try {
 			output.setObject(addressBO.getAddress(addressId));
 			output.setMessage("Address succesfully retrieved!");
+		} catch (Exception ex) {
+			output.setError(ex.getMessage());
+		}
+		return output;
+	}
+	
+	@RequestMapping(value = "/get/bydistance", method = RequestMethod.POST)
+	@ResponseBody
+	public WSOutputDTO<SolrDocumentList> getAddressByDistance(@RequestBody AddressSearchInputDTO addressDTO) {
+		WSOutputDTO<SolrDocumentList> output = new WSOutputDTO<SolrDocumentList>();
+		
+		try {
+			output.setObject(addressBO.getAddressByDistance(addressDTO));
 		} catch (Exception ex) {
 			output.setError(ex.getMessage());
 		}

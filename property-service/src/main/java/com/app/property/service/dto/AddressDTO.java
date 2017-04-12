@@ -1,5 +1,7 @@
 package com.app.property.service.dto;
 
+import org.apache.solr.common.SolrDocument;
+
 import com.app.property.service.models.Address;
 
 public class AddressDTO
@@ -34,6 +36,16 @@ public class AddressDTO
 		this.longitude = dto.longitude;
 	}
 	
+	public  AddressDTO(SolrDocument doc) {
+		this.id = Integer.parseInt(doc.getFieldValue("id").toString());
+		this.street = (doc.getFieldValue("street") == null) ? "" : doc.getFieldValue("street").toString();
+		this.area = (doc.getFieldValue("area") == null) ? "" : doc.getFieldValue("area").toString();
+		this.city = (doc.getFieldValue("city") == null) ? "" : doc.getFieldValue("city").toString();
+		this.state = (doc.getFieldValue("state") == null) ? "" : doc.getFieldValue("state").toString();
+		this.country = (doc.getFieldValue("country") == null) ? "" : doc.getFieldValue("country").toString();
+		this.zipcode = (doc.getFieldValue("country") == null) ? 0 : Integer.parseInt(doc.getFieldValue("zip").toString());
+	}
+	
 	public Address toModel() {
 		return this.updateModel(new Address());
 	}
@@ -49,4 +61,5 @@ public class AddressDTO
 		address.setLongitude(this.longitude);
 		return address;
 	}
+
 }
